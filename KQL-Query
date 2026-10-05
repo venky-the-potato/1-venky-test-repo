@@ -1,0 +1,22 @@
+resources 
+| where type in ('microsoft.compute/virtualmachines','microsoft.hybridcompute/machines') 
+| where subscriptionId in ('xxx') 
+| where type != 'microsoft.hybridcompute/machines' or tostring(properties.status) == 'Connected' 
+| extend machineId = tolower(id) 
+| extend nodeResourceGroupKey = strcat(subscriptionId, '/', tolower(resourceGroup)) 
+| join kind=leftouter ( 
+    resources 
+    | where type == 'microsoft.containerservice/managedclusters' 
+    | project nodeResourceGroupKey = strcat(subscriptionId, '/', tolower(tostring(properties.nodeResourceGroup))), isKubernetesNode = 1 
+    | distinct nodeResourceGroupKey, isKubernetesNode 
+) on nodeResourceGroupKey 
+| where isempty(isKubernetesNode) 
+| join kind=leftouter ( 
+    securityresources 
+    | where type == 'microsoft.security/softwareinventories' 
+    | project machineId = tolower(substring(id, 0, indexof(tolower(id), '/providers/microsoft.security/softwareinventories/'))), hasSoftwareInventory = 1 
+    | distinct machineId, hasSoftwareInventory 
+) on machineId 
+| where isempty(hasSoftwareInventory) 
+| project Machine = name, ResourceGroup = resourceGroup, Subscription = subscriptionId, Type = type, Location = location, MachineId = id 
+| order by Machine asc
