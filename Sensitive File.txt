@@ -1,0 +1,32 @@
+Employee Record
+
+Name: Test User
+Email: test.user@example.com
+Phone: 425-555-1234
+
+Credit Card Number: 4111111111111111
+Expiry Date: 12/30
+
+US Social Security Number: 123-45-6789
+
+Bank Account Number: 1234567890
+Routing Number: 021000021
+
+Passport Number: A12345678
+
+
+
+Name: John Doe
+Email: john.doe@example.com
+Credit Card: 4111111111111111
+SSN: 123-45-6789
+
+Name: Jane Smith
+Email: jane.smith@example.com
+Credit Card: 5555555555554444
+SSN: 987-65-4321
+
+Name: Bob Wilson
+Email: bob.wilson@example.com
+Credit Card: 378282246310005
+SSN: 111-22-3333
